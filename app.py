@@ -210,7 +210,7 @@ if uploaded_file is not None:
         st.download_button(
             label="Unduh Laporan ke PDF",
             data=pdf_bytes,
-            file_name="Laporan_Epsindo.pdf",
+            file_name="Laporan_Monitoring.pdf",
             mime="application/pdf"
         )
 
