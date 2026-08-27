@@ -115,7 +115,7 @@ if uploaded_file is not None:
         excel_data = output_excel.getvalue()
 
         st.download_button(
-            label="📥 Unduh Data ke Excel (.xlsx)",
+            label=" Unduh Data ke Excel (.xlsx)",
             data=excel_data,
             file_name="Laporan_Material_Request_Epsindo.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
