@@ -121,63 +121,101 @@ if uploaded_file is not None:
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-    # B. Tombol Download Laporan Ringkasan PDF (.pdf)
+   # B. Tombol Download Laporan Ringkasan PDF (.pdf)
     with col_dl2:
         def generate_pdf(total, avg, lambat, cepat):
             pdf_buffer = BytesIO()
-            doc = SimpleDocTemplate(pdf_buffer, pagesize=letter)
+            # Mengatur margin halaman agar lebih rapi (lebar dan proporsional)
+            doc = SimpleDocTemplate(
+                pdf_buffer, 
+                pagesize=letter,
+                rightMargin=40, leftMargin=40,
+                topMargin=40, bottomMargin=40
+            )
             story = []
             styles = getSampleStyleSheet()
+            
+            # --- CUSTOM STYLES YANG LEBIH ESTETIK ---
+            primary_color = colors.HexColor('#1f4e78')
+            accent_color = colors.HexColor('#2f5597')
+            text_dark = colors.HexColor('#333333')
             
             title_style = ParagraphStyle(
                 'TitleStyle',
                 parent=styles['Heading1'],
-                fontSize=16,
-                textColor=colors.HexColor('#1f4e78'),
-                spaceAfter=12
+                fontSize=18,
+                leading=22,
+                textColor=primary_color,
+                alignment=1, # Center
+                spaceAfter=4
             )
-            normal_style = styles['Normal']
             
-            story.append(Paragraph("Laporan Ringkasan Kinerja Workshop Duri", title_style))
-            story.append(Paragraph("PT Epsindo Jaya Pratama", styles['Heading3']))
-            story.append(Spacer(1, 12))
+            subtitle_style = ParagraphStyle(
+                'SubTitleStyle',
+                parent=styles['Heading2'],
+                fontSize=12,
+                leading=16,
+                textColor=accent_color,
+                alignment=1, # Center
+                spaceAfter=15
+            )
             
+            body_style = ParagraphStyle(
+                'BodyStyle',
+                parent=styles['Normal'],
+                fontSize=10,
+                leading=14,
+                textColor=text_dark,
+                spaceAfter=8
+            )
+            
+            # --- KONTEN PDF ---
+            story.append(Paragraph("<b>LAPORAN KINERJA WORKSHOP DURI</b>", title_style))
+            story.append(Paragraph("PT Epsindo Jaya Pratama — Divisi Material Request", subtitle_style))
+            story.append(Spacer(1, 10))
+            
+            # Paragraf Pembuka Pengantar
+            intro_text = f"Berikut adalah ringkasan eksekutif hasil pemrosesan data Material Request bulanan yang telah divalidasi oleh sistem otomatis. Laporan ini dikelompokkan berdasarkan kategori kecepatan waktu penyerahan barang di workshop."
+            story.append(Paragraph(intro_text, body_style))
+            story.append(Spacer(1, 15))
+            
+            # Tabel Ringkasan Eksekutif dengan Desain Modern
             data_tabel = [
-                ["Metrik Kinerja", "Hasil Analisis"],
-                ["Total Permintaan (MR)", str(total)],
-                ["Rata-rata Waktu Tunggu", str(avg)],
-                ["Jumlah Kategori 'Lambat'", str(lambat)],
-                ["Jumlah Kategori 'Cepat'", str(cepat)]
+                ["Indikator Kinerja Utama (KPI)", "Hasil Analisis Sistem"],
+                ["Total Permintaan Material (MR)", f"{total} Permintaan"],
+                ["Rata-rata Waktu Tunggu (Lead Time)", str(avg)],
+                ["Jumlah Permintaan Kategori 'Cepat' (<= 1 Hari)", f"{cepat} Permintaan"],
+                ["Jumlah Permintaan Kategori 'Lambat' (> 3 Hari)", f"{lambat} Permintaan"]
             ]
             
-            t = Table(data_tabel, colWidths=[200, 200])
+            # Lebar tabel disesuaikan dengan margin halaman (total 532 pt)
+            t = Table(data_tabel, colWidths=[280, 252])
             t.setStyle(TableStyle([
-                ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#1f4e78')),
+                ('BACKGROUND', (0,0), (-1,0), primary_color),
                 ('TEXTCOLOR', (0,0), (-1,0), colors.whitesmoke),
-                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                ('ALIGN', (0,0), (0,-1), 'LEFT'),
+                ('ALIGN', (1,0), (1,-1), 'CENTER'),
                 ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0,0), (-1,0), 10),
                 ('BOTTOMPADDING', (0,0), (-1,0), 8),
-                ('BACKGROUND', (0,1), (-1,-1), colors.HexColor('#f2f2f2')),
-                ('GRID', (0,0), (-1,-1), 0.5, colors.grey)
+                ('TOPPADDING', (0,0), (-1,0), 8),
+                ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.HexColor('#f9fbfd'), colors.HexColor('#ffffff')]),
+                ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#d9d9d9')),
+                ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+                ('BOTTOMPADDING', (0,1), (-1,-1), 6),
+                ('TOPPADDING', (0,1), (-1,-1), 6),
             ]))
             
             story.append(t)
-            story.append(Spacer(1, 20))
-            story.append(Paragraph("Dokumen ini digenerate secara otomatis oleh Sistem Monitoring Bulanan PT Epsindo.", normal_style))
+            story.append(Spacer(1, 25))
+            
+            # Catatan Kaki / Penutup Estetik
+            footer_text = "<i>Dokumen ini dicetak secara otomatis dari Sistem Monitoring & Prediksi PT Epsindo Jaya Pratama. Sah dan valid tanpa tanda tangan basah apabila terlampir dalam sistem database perusahaan.</i>"
+            story.append(Paragraph(footer_text, ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=8, textColor=colors.HexColor('#7f7f7f'), leading=12)))
             
             doc.build(story)
             pdf_buffer.seek(0)
             return pdf_buffer.getvalue()
-
-        pdf_bytes = generate_pdf(total_req, avg_lead, jml_lambat, jml_cepat)
-        st.download_button(
-            label="Unduh Ringkasan Laporan ke PDF",
-            data=pdf_bytes,
-            file_name="Laporan_Monitoring.pdf",
-            mime="application/pdf"
-        )
-
-    st.markdown("---")
 
     # --- 5. PEMODELAN MACHINE LEARNING (RANDOM FOREST) & EVALUASI ---
     st.subheader("Analisis Prediktif & Evaluasi Model Random Forest")
