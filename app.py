@@ -115,17 +115,17 @@ if uploaded_file is not None:
         excel_data = output_excel.getvalue()
 
         st.download_button(
-            label="📥 Unduh Data ke Excel (.xlsx)",
+            label="Unduh Data ke Excel",
             data=excel_data,
-            file_name="Laporan_Material_Request_Epsindo.xlsx",
+            file_name="Laporan_Monitoring.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
-    # B. Tombol Download Laporan Ringkasan PDF (.pdf) - Versi Elegan & Profesional
+    # B. Tombol Download Laporan Ringkasan PDF (.pdf)
     with col_dl2:
         def generate_pdf(total, avg, lambat, cepat):
             pdf_buffer = BytesIO()
-            # Margin halaman disesuaikan agar rapi proporsional
+            # Margin halaman disesuaikan agar rapi
             doc = SimpleDocTemplate(
                 pdf_buffer, 
                 pagesize=letter,
@@ -135,7 +135,7 @@ if uploaded_file is not None:
             story = []
             styles = getSampleStyleSheet()
             
-            # Palet warna korporat profesional
+            # Palet warna 
             primary_color = colors.HexColor('#1f4e78')
             accent_color = colors.HexColor('#2f5597')
             text_dark = colors.HexColor('#333333')
@@ -171,18 +171,13 @@ if uploaded_file is not None:
             
             # Konten Dokumen PDF
             story.append(Paragraph("<b>LAPORAN KINERJA WORKSHOP DURI</b>", title_style))
-            story.append(Paragraph("PT Epsindo Jaya Pratama — Divisi Material Request", subtitle_style))
-            story.append(Spacer(1, 10))
-            
-            intro_text = f"Berikut adalah ringkasan eksekutif hasil pemrosesan data Material Request bulanan yang telah divalidasi oleh sistem otomatis. Laporan ini dikelompokkan berdasarkan kategori kecepatan waktu penyerahan barang di workshop."
-            story.append(Paragraph(intro_text, body_style))
+            story.append(Paragraph("PT Epsindo Jaya Pratama", subtitle_style))
             story.append(Spacer(1, 10))
             
             # Tabel Ringkasan Eksekutif dengan Desain Rapi & Modern
             data_tabel = [
-                ["Indikator Kinerja Utama (KPI)", "Hasil Analisis Sistem"],
+                ["Indikator", "Hasil Analisis Sistem"],
                 ["Total Permintaan Material (MR)", f"{total} Permintaan"],
-                ["Rata-rata Waktu Tunggu (Lead Time)", str(avg)],
                 ["Jumlah Permintaan Kategori 'Cepat' (<= 1 Hari)", f"{cepat} Permintaan"],
                 ["Jumlah Permintaan Kategori 'Lambat' (> 3 Hari)", f"{lambat} Permintaan"]
             ]
@@ -207,19 +202,15 @@ if uploaded_file is not None:
             story.append(t)
             story.append(Spacer(1, 30))
             
-            # Footer / Catatan Kaki Dokumen
-            footer_text = "<i>Dokumen ini dicetak secara otomatis dari Sistem Monitoring Bulanan PT Epsindo Jaya Pratama. Sah dan valid tanpa tanda tangan basah apabila terlampir dalam sistem database perusahaan.</i>"
-            story.append(Paragraph(footer_text, ParagraphStyle('FooterStyle', parent=styles['Normal'], fontSize=8, textColor=colors.HexColor('#7f7f7f'), leading=12)))
-            
             doc.build(story)
             pdf_buffer.seek(0)
             return pdf_buffer.getvalue()
 
         pdf_bytes = generate_pdf(total_req, avg_lead, jml_lambat, jml_cepat)
         st.download_button(
-            label="📄 Unduh Ringkasan Laporan ke PDF",
+            label="Unduh Laporan ke PDF",
             data=pdf_bytes,
-            file_name="Ringkasan_Laporan_Epsindo.pdf",
+            file_name="Laporan_Epsindo.pdf",
             mime="application/pdf"
         )
 
