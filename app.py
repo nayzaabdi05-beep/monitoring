@@ -11,7 +11,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDis
 st.set_page_config(page_title="Sistem Monitoring PT Epsindo Jaya Pratama Workshop Duri", layout="wide")
 
 # --- HEADER UTAMA SISTEM ---
-st.title("Sistem Monitoring Bulanan PT Epsindo Jaya Pratama Workshop Duri")
+st.title("Sistem Monitoring Bulanan")
 st.markdown("### PT Epsindo Jaya Pratama Workshop Duri")
 st.write("Silakan unggah laporan bulanan perusahaan di bawah ini untuk memproses data secara otomatis.")
 st.markdown("---")
