@@ -21,7 +21,7 @@ col_up1, col_up2, col_up3 = st.columns([1, 2, 1])
 
 with col_up2:
     uploaded_file = st.file_uploader(
-        "📂 Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
+        "Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
         type=["xlsx", "csv"],
         help="Format file harus berisikan kolom data Material Request"
     )
