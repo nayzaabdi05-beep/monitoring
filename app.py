@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
 
 # Konfigurasi Layout Halaman Menjadi Lebar
-st.set_page_config(page_title="Sistem Monitoring & Prediksi PT Epsindo", layout="wide")
+st.set_page_config(page_title="Sistem Monitoring PT Epsindo Jaya Pratama Workshop Duri", layout="wide")
 
 # --- HEADER UTAMA SISTEM ---
 st.title("Sistem Informasi & Prediksi Material Request")
