@@ -12,7 +12,7 @@ st.set_page_config(page_title="Sistem Monitoring & Prediksi PT Epsindo", layout=
 
 # --- HEADER UTAMA SISTEM ---
 st.title("Sistem Informasi & Prediksi Material Request")
-st.markdown("### PT Epsindo Jaya Pratama — Workshop Duri")
+st.markdown("### PT Epsindo Jaya Pratama Workshop Duri")
 st.write("Silakan unggah laporan bulanan perusahaan di bawah ini untuk memproses data secara otomatis.")
 st.markdown("---")
 
