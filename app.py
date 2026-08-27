@@ -26,7 +26,7 @@ col_up1, col_up2, col_up3 = st.columns([1, 2, 1])
 
 with col_up2:
     uploaded_file = st.file_uploader(
-        "📂 Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
+        " Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
         type=["xlsx", "csv"],
         help="Format file harus berisikan kolom data Material Request"
     )
@@ -115,9 +115,9 @@ if uploaded_file is not None:
         excel_data = output_excel.getvalue()
 
         st.download_button(
-            label="📥 Unduh Data ke Excel (.xlsx)",
+            label="Unduh Data ke Excel",
             data=excel_data,
-            file_name="Laporan_Material_Request_Epsindo.xlsx",
+            file_name="Laporan_Monitoring.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         )
 
@@ -171,9 +171,9 @@ if uploaded_file is not None:
 
         pdf_bytes = generate_pdf(total_req, avg_lead, jml_lambat, jml_cepat)
         st.download_button(
-            label="📄 Unduh Ringkasan Laporan ke PDF",
+            label="Unduh Ringkasan Laporan ke PDF",
             data=pdf_bytes,
-            file_name="Ringkasan_Laporan_Epsindo.pdf",
+            file_name="_Laporan_Monitoring.pdf",
             mime="application/pdf"
         )
 
@@ -198,7 +198,7 @@ if uploaded_file is not None:
             
             # Tampilkan Tingkat Akurasi
             acc = accuracy_score(y_test, y_pred)
-            st.info(f"💡 Status Model: Berhasil dilatih secara otomatis menggunakan algoritma Random Forest dengan tingkat akurasi **{acc * 100:.2f}%**")
+            st.info(f" Status Model: Berhasil dilatih secara otomatis menggunakan algoritma Random Forest dengan tingkat akurasi **{acc * 100:.2f}%**")
             
             # Tampilkan Grafik Evaluasi dalam 2 Kolom
             g1, g2 = st.columns(2)
