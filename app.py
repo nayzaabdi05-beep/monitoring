@@ -173,7 +173,7 @@ if uploaded_file is not None:
         st.download_button(
             label="Unduh Ringkasan Laporan ke PDF",
             data=pdf_bytes,
-            file_name="_Laporan_Monitoring.pdf",
+            file_name="Laporan_Monitoring.pdf",
             mime="application/pdf"
         )
 
