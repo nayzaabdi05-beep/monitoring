@@ -138,7 +138,7 @@ if uploaded_file is not None:
     st.markdown("---")
 
     # --- 4. TABEL DETAIL DATA & TOMBOL DOWNLOAD ---
-    st.subheader("Lembar Data Masuk (Database Viewer)")
+    st.subheader("Database Viewer")
     st.dataframe(df_filtered, use_container_width=True)
 
     # --- FUNGSI PEMBUATAN FILE EKSPOR ---
