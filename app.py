@@ -7,7 +7,7 @@ from io import BytesIO
 st.set_page_config(page_title="Sistem Monitoring PT Epsindo", layout="wide", page_icon="📊")
 
 # --- HEADER UTAMA SISTEM ---
-st.title("📊 Sistem Monitoring Bulanan")
+st.title("Sistem Monitoring Bulanan")
 st.markdown("### PT Epsindo Jaya Pratama Workshop Duri")
 st.write("Silakan unggah laporan bulanan perusahaan di bawah ini untuk memproses data secara otomatis.")
 st.markdown("---")
@@ -17,7 +17,7 @@ col_up1, col_up2, col_up3 = st.columns([1, 2, 1])
 
 with col_up2:
     uploaded_file = st.file_uploader(
-        "📂 Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
+        " Tarik atau Pilih File Laporan Bulanan (.xlsx / .csv)", 
         type=["xlsx", "csv"],
         help="Format file harus berisikan kolom data Material Request"
     )
@@ -39,11 +39,11 @@ if uploaded_file is not None:
     st.markdown("---")
 
     # --- PENGATURAN KATEGORI & FILTER INTERAKTIF DI DASHBOARD UTAMA ---
-    st.subheader("⚙️ Kontrol, Pengaturan & Filter Data")
+    st.subheader("Kontrol, Pengaturan & Filter Data")
     
     # Tombol Popover Pengaturan Batas Hari Interaktif di Dashboard
     with st.popover("⚙️ Atur Format Batas Hari Kategori"):
-        st.markdown("### 🎛️ Pengaturan Lead Time Interaktif")
+        st.markdown("### Pengaturan Lead Time")
         st.write("Tentukan batas maksimal hari untuk masing-masing kategori:")
         
         # Pengaturan batas hari yang sepenuhnya dinamis
@@ -85,7 +85,7 @@ if uploaded_file is not None:
     col_f1, col_f2 = st.columns(2)
     
     with col_f1:
-        st.subheader("🔍 Filter Kategori Waktu")
+        st.subheader("Filter Kategori Waktu")
         semua_kategori = ['Cepat', 'Standar', 'Lambat', 'Sangat Lambat', 'Tidak Valid']
         status_opsi = [kat for kat in semua_kategori if kat in df['Kategori_Waktu'].unique()]
 
@@ -96,7 +96,7 @@ if uploaded_file is not None:
         )
     
     with col_f2:
-        st.subheader("🔎 Pencarian Cepat")
+        st.subheader("Pencarian")
         keyword = st.text_input("Cari berdasarkan teks/nomor (No. MR, Material, PIC, dll):", "")
 
     # Terapkan Filter Kategori
@@ -110,7 +110,7 @@ if uploaded_file is not None:
     st.markdown("---")
 
     # --- 3. RINGKASAN KARTU METRIK OPERASIONAL (6 KOLOM LENGKAP) ---
-    st.subheader("📈 Ringkasan Eksekutif Kinerja Gudang")
+    st.subheader(" Ringkasan Eksekutif Kinerja Gudang")
     m1, m2, m3, m4, m5, m6 = st.columns(6)
     
     total_req = len(df_filtered)
@@ -123,14 +123,14 @@ if uploaded_file is not None:
 
     m1.metric("Total Data", total_req)
     m2.metric("Waktu Terlama", max_lead)
-    m3.metric("🚀 Cepat", jml_cepat)
-    m4.metric("⏱️ Standar", jml_standar)
-    m5.metric("🐢 Lambat", jml_lambat)
-    m6.metric("⚠️ Sangat Lambat", jml_sangat_lambat)
+    m3.metric("Cepat", jml_cepat)
+    m4.metric("Standar", jml_standar)
+    m5.metric("Lambat", jml_lambat)
+    m6.metric("Sangat Lambat", jml_sangat_lambat)
     
     # --- VISUALISASI GRAFIK INTERAKTIF ---
     if 'Kategori_Waktu' in df_filtered.columns and not df_filtered.empty:
-        st.markdown("### 📊 Grafik Sebaran Kinerja Pengerjaan")
+        st.markdown("### Grafik Sebaran Kinerja Pengerjaan")
         chart_data = df_filtered['Kategori_Waktu'].value_counts().reset_index()
         chart_data.columns = ['Kategori', 'Jumlah']
         st.bar_chart(chart_data.set_index('Kategori'))
@@ -138,7 +138,7 @@ if uploaded_file is not None:
     st.markdown("---")
 
     # --- 4. TABEL DETAIL DATA & TOMBOL DOWNLOAD ---
-    st.subheader("📋 Lembar Data Masuk (Database Viewer)")
+    st.subheader("Lembar Data Masuk (Database Viewer)")
     st.dataframe(df_filtered, use_container_width=True)
 
     # --- FUNGSI PEMBUATAN FILE EKSPOR ---
@@ -152,7 +152,7 @@ if uploaded_file is not None:
         excel_data = output_excel.getvalue()
 
         st.download_button(
-            label="📥 Unduh Data ke Excel (.xlsx)",
+            label="Unduh Data ke Excel (.xlsx)",
             data=excel_data,
             file_name="Laporan_Material_Request_Epsindo.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -160,4 +160,4 @@ if uploaded_file is not None:
 
 else:
     # Tampilan awal jika belum ada file yang di-upload
-    st.info("ℹ️ **Petunjuk Penggunaan:** Silakan klik kotak unggah di atas atau tarik file laporan Excel/CSV perusahaan ke area tersebut untuk menampilkan sistem monitoring dan database viewer.")
+    st.info("**Petunjuk Penggunaan:** Silakan klik kotak unggah di atas atau tarik file laporan Excel/CSV perusahaan ke area tersebut untuk menampilkan sistem monitoring dan database viewer.")
